@@ -4,17 +4,119 @@
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <!--bootstrap css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="script.js"></script>
+    <!--bootstrap js-->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div id="content">
-      <p>Hi, my name is</p>
-      <h1>Trinity Donohugh</h1>
-      <img src="images/trinitygoogle.png" alt="trinity google memoji"></img>
-      <p>I am a rising Junior at Stanford University studying Computer Science and History.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">I'm feeling fun</button>
-      <div id="greeting-container"></div>
+    <div class="row mx-md-n5">
+      <div class="col px-md-5"><div class="p-3 border bg-light">
+        <div class="alert alert-success" role="alert">
+          <strong>Welcome to my website!</strong> Hope you have fun whilst you're here.
+        </div></div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-5">
+          <div class="row">
+            <div class="col">
+              <em>Hi, my name is</em>
+              <h3>Trinity Donohugh</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <img src="images/trinitygoogle.png" class="img-fluid" alt="trinity google memoji"></img>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <p><strong>05. Random</strong></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="card">
+                      <div class="card-header" role="tab" id="headingOne">
+                        <p class="mb-0">
+                          <a id="link" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            click here for a suprise 
+                          </a>
+                        </p>
+                      </div>
+
+                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="card-block">
+                          <button type="button" class="btn btn-success" onclick="addRandomGreeting()">I'm feeling fun</button>
+                          <div class="embed-responsive embed-responsive-16by9" id="greeting-container"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-7">
+          <div class="row">
+            <div class="col">
+            <p><strong>01. About me</strong></p>
+            <p>Hi, I'm Trinity. I am a rising Junior at <a id="link" href="www.stanford.edu">Stanford University</a> studying Computer Science and History. 
+            I'm sort of a nomad. I was born in Singapore, grew up in Hong Kong, was educated in the UK and am now in college in California.
+            Outside of school, I love spending my time reading in nature, and training for triathlons.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p><strong>02. Experience</strong></p>
+              <div class="row">
+                <div class="col">
+                  <p>STEP Intern @ <a id="link" href="www.google.com">Google</a><p>
+                <div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Strategy Intern @ <a id="link" href="https://ai.tencent.com/ailab/zh/index">Tencent AI Lab</a><p>
+                <div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <p>Growth Marketing and User Research Intern@ <a id="link" href="www.upstart.com">Upstart</a><p>
+                <div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p><strong>03. Work/Portfolio</strong></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p><strong>04. Other Fun Things!</strong></p>
+              <div class="row">
+                <div class="col"><div class="p-2 border bg-light">
+                  <button type="button" class="btn btn-outline-success">resume</button>
+                </div></div>
+              </div>
+              <div class="row">
+                <div class="col"><div class="p-2 border bg-light">
+                  <button type="button" class="btn btn-outline-success">contact</button>
+                </div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
