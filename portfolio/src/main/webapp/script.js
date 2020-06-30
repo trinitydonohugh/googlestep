@@ -29,7 +29,3 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerHTML = gif;
 }
-
-function openEmail(email) {
-    
-}
