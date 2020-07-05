@@ -29,3 +29,14 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerHTML = gif;
 }
+
+/**
+ * gets title from server
+ */
+function getTitle() {
+  console.log('in getTitle() function');
+  fetch('/data').then(response => response.text()).then((titleText) => {
+    console.log('printing content');
+    document.getElementById('title-text').innerHTML = titleText;
+  });
+}
