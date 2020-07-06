@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random dolphin-gifs to the page.
  */
 function addRandomGreeting() {
   const gifs =
@@ -22,7 +22,7 @@ function addRandomGreeting() {
       '<iframe class="embed-responsive-item" src="https://giphy.com/embed/26BkLyDcbBJ8lTBS0" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>', 
       '<iframe class="embed-responsive-item" src="https://giphy.com/embed/dvWHVxunxwimQ" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'];
 
-  // Pick a random greeting.
+  // Pick a random gif.
   const gif = gifs[Math.floor(Math.random() * gifs.length)];
 
   // Add it to the page.
@@ -31,12 +31,21 @@ function addRandomGreeting() {
 }
 
 /**
- * gets title from server
+ * Fetches comments from the servers and adds them to the DOM.
  */
-function getTitle() {
-  console.log('in getTitle() function');
-  fetch('/data').then(response => response.text()).then((titleText) => {
-    console.log('printing content');
-    document.getElementById('title-text').innerHTML = titleText;
+function getMessages() {
+  fetch('/data').then(response => response.json()).then((messages) => {
+    const messagesListElement = document.getElementById('messages-container');
+    messagesListElement.innerHTML = 'messages: ';
+    for (i = 0; i < messages.length; i++) {
+      messagesListElement.appendChild(createListElement(messages[i]));
+    }
   });
+}
+
+/** Creates individual <div> element containing messages text. */
+function createListElement(text) {
+  const divElement = document.createElement('div');
+  divElement.innerText = text;
+  return divElement;
 }
