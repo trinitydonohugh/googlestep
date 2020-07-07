@@ -14,42 +14,88 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns messages/ comments. */
+/** Servlet respondsable for storing and returning messages/comments. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private List<String> messages;
-
+  
   @Override
-  public void init() {
-    messages = new ArrayList<>();
-    messages.add("Green tea was founded in China in 2737 B.C.");
-    messages.add("English Breakfast Tea came into existence in 1843");
-    messages.add("Chai tea was invented between 5000 and 9000 years ago");
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = getInput(request, "name-input", "");
+    String message = getInput(request, "message-input", "");
+    long timestamp = System.currentTimeMillis();
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("message", message);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/teatime.html");
+  }
+
+  /** Returns the inputs entered by the user. */
+  private String getInput(HttpServletRequest request, String userInput, String defaultValue) {
+    // Get the input from the form.
+    String inputString = request.getParameter(userInput);
+
+    // Checks if input is null
+    if(inputString == null) {
+        return defaultValue;
+    }
+
+    return inputString;
   }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJson(messages);
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<Comment> comments = new ArrayList<Comment>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String name = (String) entity.getProperty("name");
+      String message = (String) entity.getProperty("message");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      // Convert timestamp into human-readable date
+      SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+      String date = formatter.format(timestamp);
+
+      Comment newComment = new Comment(id, name, message, date);
+      comments.add(newComment);
+    }
+
+    Gson gson = new Gson();
 
     response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
-
-  /**
-   * Converts the messages list instance into a JSON string using the Gson library. 
-   */
-  private String convertToJson(List<String> messages) {
-    Gson gson = new Gson();
-    String json = gson.toJson(messages);
-    return json;
+    response.getWriter().println(gson.toJson(comments));
   }
 }

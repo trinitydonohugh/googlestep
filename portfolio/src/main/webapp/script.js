@@ -34,18 +34,59 @@ function addRandomGreeting() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getMessages() {
-  fetch('/data').then(response => response.json()).then((messages) => {
-    const messagesListElement = document.getElementById('messages-container');
-    messagesListElement.innerHTML = 'messages: ';
-    for (i = 0; i < messages.length; i++) {
-      messagesListElement.appendChild(createListElement(messages[i]));
-    }
+  fetch('/data').then(response => response.json()).then((comments) => {
+    const commentsListElement = document.getElementById('messages-container');
+    comments.forEach((comment) => {
+      commentsListElement.appendChild(createCommentElement(comment));
+    })
   });
 }
 
 /** Creates individual <div> element containing messages text. */
-function createListElement(text) {
-  const divElement = document.createElement('div');
-  divElement.innerText = text;
-  return divElement;
+function createCommentElement(comment) {
+  const divRowElement = document.createElement('div');
+  divRowElement.className = 'row';
+
+  const divColElementL = document.createElement('div');
+  divColElementL.className = 'col-11 mb-3';
+
+  const nameDateElm = document.createElement('p');
+  nameDateElm.innerHTML = (comment.name).bold();
+  nameDateElm.innerHTML += " | ";
+  nameDateElm.innerHTML += (comment.date).italics();
+
+  const messageElm = document.createElement('p');
+  messageElm.innerText = comment.message;
+
+  const divColElementR = document.createElement('div');
+  divColElementR.className = 'col-1 mb-3';
+
+  divColElementL.appendChild(nameDateElm);
+  divColElementL.appendChild(messageElm);
+
+  const deleteElm = document.createElement('button');
+  deleteElm.className = 'close';
+  deleteElm.type = 'button';
+  const spanElm = document.createElement('span');
+  spanElm.innerHTML = '&times;';
+  deleteElm.appendChild(spanElm);
+  deleteElm.addEventListener('click', () => {
+    deleteComment(comment);
+
+    // Remove the comment from the DOM.
+    divRowElement.remove();
+  });
+
+  divColElementR.appendChild(deleteElm);
+
+  divRowElement.appendChild(divColElementL);
+  divRowElement.appendChild(divColElementR);
+  return divRowElement;
+}
+
+/** Tells the server to delete the task. */
+function deleteComment(comment) {
+  const params = new URLSearchParams();
+  params.append('id', comment.id);
+  fetch('/delete-data', {method: 'POST', body: params});
 }

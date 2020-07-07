@@ -14,7 +14,29 @@
   </head>
   <body onload="getMessages()">
     <div class="container">
-      <div id="messages-container"></div>
+      <div class="row">
+        <div class="col">
+          <h1>Trini teatime</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form action="/data" method="POST">
+            <div class="form-group">
+              <input class="form-control" name="name-input" type="text" placeholder="Name"></input>
+            </div>
+            <div class="form-group">
+              <textarea class="form-control" name="message-input" type="text" placeholder="Do you have a thought or something internesting to share? Please enter it here." rows="3"></textarea> 
+            </div>
+            <button type="submit" class="btn btn-success">share</button>
+          </form>
+        </div>
+      </div>
+      <hr></hr>
+      <div class="row">
+        <div class="col my-1" id="messages-container">
+        </div>
+      </div>
     </div>
   </body>
 </html>
