@@ -34,12 +34,15 @@ function addRandomGreeting() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getMessages() {
-  fetch('/data').then(response => response.json()).then((messages) => {
-    const messagesListElement = document.getElementById('messages-container');
-    messagesListElement.innerHTML = 'messages: ';
-    for (i = 0; i < messages.length; i++) {
-      messagesListElement.appendChild(createListElement(messages[i]));
-    }
+  document.getElementById('messages-container').innerHTML = "";
+
+  fetch('/data').then(response => response.json()).then((comments) => {
+    const commentsListElement = document.getElementById('messages-container');
+    comments.forEach((comment) => {
+      commentsListElement.appendChild(createListElement(comment.name));
+      commentsListElement.appendChild(createListElement(comment.date));
+      commentsListElement.appendChild(createListElement(comment.message));
+    })
   });
 }
 
