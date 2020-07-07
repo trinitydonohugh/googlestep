@@ -34,8 +34,6 @@ function addRandomGreeting() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getMessages() {
-  //document.getElementById('messages-container').innerHTML = "";
-
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentsListElement = document.getElementById('messages-container');
     comments.forEach((comment) => {

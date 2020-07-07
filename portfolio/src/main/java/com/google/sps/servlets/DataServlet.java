@@ -46,14 +46,9 @@ public class DataServlet extends HttpServlet {
     String message = getInput(request, "message-input", "");
     long timestamp = System.currentTimeMillis();
 
-    // Convert timestamp into human-readable date
-    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-    String date = formatter.format(timestamp);
-
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("message", message);
-    commentEntity.setProperty("date", date);
     commentEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -88,8 +83,11 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
-      String date = (String) entity.getProperty("date");
-      //long timestamp = (long) entity.getProperty("timestamp");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      // Convert timestamp into human-readable date
+      SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+      String date = formatter.format(timestamp);
 
       Comment newComment = new Comment(id, name, message, date);
       comments.add(newComment);
