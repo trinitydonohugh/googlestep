@@ -34,21 +34,48 @@ function addRandomGreeting() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getMessages() {
-  document.getElementById('messages-container').innerHTML = "";
+  //document.getElementById('messages-container').innerHTML = "";
 
   fetch('/data').then(response => response.json()).then((comments) => {
     const commentsListElement = document.getElementById('messages-container');
     comments.forEach((comment) => {
-      commentsListElement.appendChild(createListElement(comment.name));
-      commentsListElement.appendChild(createListElement(comment.date));
-      commentsListElement.appendChild(createListElement(comment.message));
+      commentsListElement.appendChild(createCommentElement(comment));
     })
   });
 }
 
 /** Creates individual <div> element containing messages text. */
-function createListElement(text) {
+function createCommentElement(comment) {
   const divElement = document.createElement('div');
-  divElement.innerText = text;
+
+  const nameElm = document.createElement('p');
+  nameElm.innerHTML = (comment.name).bold();
+
+  const dateElm = document.createElement('p');
+  dateElm.innerHTML = (comment.date).italics();
+
+  const messageElm = document.createElement('p');
+  messageElm.innerText = comment.message;
+
+  const deleteElm = document.createElement('button');
+  deleteElm.innerText = 'Delete';
+  deleteElm.addEventListener('click', () => {
+    deleteComment(comment);
+
+    // Remove the comment from the DOM.
+    divElement.remove();
+  });
+
+  divElement.appendChild(nameElm);
+  divElement.appendChild(dateElm);
+  divElement.appendChild(messageElm);
+  divElement.appendChild(deleteElm);
   return divElement;
+}
+
+/** Tells the server to delete the task. */
+function deleteComment(comment) {
+  const params = new URLSearchParams();
+  params.append('id', comment.id);
+  fetch('/delete-data', {method: 'POST', body: params});
 }
