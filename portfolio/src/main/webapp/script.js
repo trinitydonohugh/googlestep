@@ -46,31 +46,44 @@ function getMessages() {
 
 /** Creates individual <div> element containing messages text. */
 function createCommentElement(comment) {
-  const divElement = document.createElement('div');
+  const divRowElement = document.createElement('div');
+  divRowElement.className = 'row';
 
-  const nameElm = document.createElement('p');
-  nameElm.innerHTML = (comment.name).bold();
+  const divColElementL = document.createElement('div');
+  divColElementL.className = 'col-11 mb-3';
 
-  const dateElm = document.createElement('p');
-  dateElm.innerHTML = (comment.date).italics();
+  const nameDateElm = document.createElement('p');
+  nameDateElm.innerHTML = (comment.name).bold();
+  nameDateElm.innerHTML += " | ";
+  nameDateElm.innerHTML += (comment.date).italics();
 
   const messageElm = document.createElement('p');
   messageElm.innerText = comment.message;
 
+  const divColElementR = document.createElement('div');
+  divColElementR.className = 'col-1 mb-3';
+
+  divColElementL.appendChild(nameDateElm);
+  divColElementL.appendChild(messageElm);
+
   const deleteElm = document.createElement('button');
-  deleteElm.innerText = 'Delete';
+  deleteElm.className = 'close';
+  deleteElm.type = 'button';
+  const spanElm = document.createElement('span');
+  spanElm.innerHTML = '&times;';
+  deleteElm.appendChild(spanElm);
   deleteElm.addEventListener('click', () => {
     deleteComment(comment);
 
     // Remove the comment from the DOM.
-    divElement.remove();
+    divRowElement.remove();
   });
 
-  divElement.appendChild(nameElm);
-  divElement.appendChild(dateElm);
-  divElement.appendChild(messageElm);
-  divElement.appendChild(deleteElm);
-  return divElement;
+  divColElementR.appendChild(deleteElm);
+
+  divRowElement.appendChild(divColElementL);
+  divRowElement.appendChild(divColElementR);
+  return divRowElement;
 }
 
 /** Tells the server to delete the task. */
