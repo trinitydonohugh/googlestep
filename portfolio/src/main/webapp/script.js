@@ -34,12 +34,15 @@ function addRandomGreeting() {
  * Fetches comments from the servers and adds them to the DOM.
  */
 function getMessages() {
-  fetch('/data').then(response => response.json()).then((comments) => {
+  try {
+  fetch('./data').then(response => response.json()).then((comments) => {
     const commentsListElement = document.getElementById('messages-container');
     comments.forEach((comment) => {
       commentsListElement.appendChild(createCommentElement(comment));
     })
-  });
+  });} catch(err) {
+    console.log('err', err);
+  }
 }
 
 /** Creates individual <div> element containing messages text. */
@@ -89,4 +92,12 @@ function deleteComment(comment) {
   const params = new URLSearchParams();
   params.append('id', comment.id);
   fetch('/delete-data', {method: 'POST', body: params});
+}
+
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 22.3193, lng: 114.1694 },
+    zoom: 3
+  });
 }
