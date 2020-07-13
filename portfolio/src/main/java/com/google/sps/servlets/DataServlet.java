@@ -44,8 +44,6 @@ public class DataServlet extends HttpServlet {
     // Get the input from the form.
     String name = request.getParameter("name-input");
     String message = request.getParameter("message-input");
-    //String name = getInput(request, "name-input", "");
-    //String message = getInput(request, "message-input", "");
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
@@ -99,10 +97,8 @@ public class DataServlet extends HttpServlet {
     }
 
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    json = gson.toJson(comments);
 
     response.setContentType("application/json;");
-    response.getWriter().println(json);
+    response.getWriter().println(gson.toJson(comments));
   }
 }
