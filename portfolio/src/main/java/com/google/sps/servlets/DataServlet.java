@@ -18,13 +18,13 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.sps.data.Comment;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gson.Gson;
-import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +38,12 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet respondsable for storing and returning messages/comments. */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String name = getInput(request, "name-input", "");
-    String message = getInput(request, "message-input", "");
+    String name = request.getParameter("name-input");
+    String message = request.getParameter("message-input");
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
@@ -73,12 +73,13 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    Query query = new Query("Comment");
+
     PreparedQuery results = datastore.prepare(query);
 
-    List<Comment> comments = new ArrayList<Comment>();
+    List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
