@@ -96,8 +96,42 @@ function deleteComment(comment) {
 
 var map;
 function initMap() {
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 22.3193, lng: 114.1694 },
-    zoom: 3
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 3,
+    center: {lat: 22.3193, lng: 114.1694}
+  });
+
+  setMarkers(map);
+}
+
+var trinLocations = [
+  ['Hong Kong: this is where I went to Primary School!', 22.3193, 114.1694],
+  ['Singapore: this is where I was born.', 1.3521, 103.8198],
+  ['London: this is where I went to Secondary School.', 51.5074, 0.1278],
+  ['Stanford: this is where I currently attend college', 37.4275, -122.1697],
+];
+
+function setMarkers(map) {
+  // Adds markers to the map.
+  for (var i = 0; i < trinLocations.length; i++) {
+    var place = trinLocations[i];
+    var marker = new google.maps.Marker({
+      position: {lat: place[1], lng: place[2]},
+      map: map,
+      title: place[0],
+    });
+    attachMessage(marker, place);
+  }
+}
+
+// marker is clicked, the info window will open with the message.
+function attachMessage(marker, place) {
+  var message = place[0];
+  var infowindow = new google.maps.InfoWindow({
+    content: message
+  });
+
+  marker.addListener("click", function() {
+    infowindow.open(marker.get("map"), marker);
   });
 }
