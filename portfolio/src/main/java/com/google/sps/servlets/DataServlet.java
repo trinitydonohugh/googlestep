@@ -78,8 +78,6 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("Comment");
 
     PreparedQuery results = datastore.prepare(query);
-    
-    System.out.println("results");
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
