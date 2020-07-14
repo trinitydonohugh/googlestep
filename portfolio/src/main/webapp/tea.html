@@ -14,6 +14,14 @@
     <!--Maps API-->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD90S_-mVqEVZK9RujdYWJmmYSa2enmnPk&callback=initMap"
     type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+        'mapsApiKey': 'AIzaSyD90S_-mVqEVZK9RujdYWJmmYSa2enmnPk'
+      });   
+      google.charts.setOnLoadCallback(drawRegionsMap);
+    </script>
   </head>
   <body>
     <div class="container">
@@ -34,7 +42,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col mb-3">
           <div class="card">
             <div class="card-header" id="map" style="height: 600px"></div>
             <div class="card-body">
@@ -42,6 +50,20 @@
               <p class="card-text">
                 These are some of the places I've lived growing up. 
                 Feel free to look around, explore, and have fun. There are four locations in total:)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-5">
+          <div class="card">
+            <div class="card-header bg-transparent" id="regions_div"></div>
+            <div class="card-body">
+              <h5 class="card-title">A GeoChart showing the cost per capita of air pollution from fossil feuls by select countries (in US dollars)</h5>
+              <p class="card-text">
+                These are some cool stats from 
+                <a id="link" href="https://www-statista-com.stanford.idm.oclc.org/statistics/1098502/cost-per-capita-air-pollution-fossil-fuels-globally-by-country/">Statista</a>
               </p>
             </div>
           </div>

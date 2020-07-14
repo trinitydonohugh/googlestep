@@ -94,6 +94,7 @@ function deleteComment(comment) {
   fetch('/delete-data', {method: 'POST', body: params});
 }
 
+//adds map to tea.html page
 var map;
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -134,4 +135,26 @@ function attachMessage(marker, place) {
   marker.addListener("click", function() {
     infowindow.open(marker.get("map"), marker);
   });
+}
+
+//draws a chart using google charts library
+function drawRegionsMap() {
+  var data = google.visualization.arrayToDataTable([
+    ['Country', 'Popularity'],
+    ['United States', 1900],
+    ['Switzerland', 1900],
+    ['Germany', 1700],
+    ['South Korea', 1100],
+    ['Canada', 1100],
+    ['Italy', 1000],
+    ['United Kingdom', 1000],
+    ['Japan', 1000],
+    ['France', 800]
+  ]);
+
+  var options = {};
+
+  var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+  chart.draw(data, options);
 }
