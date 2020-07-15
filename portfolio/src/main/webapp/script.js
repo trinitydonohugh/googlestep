@@ -94,7 +94,7 @@ function deleteComment(comment) {
   fetch('/delete-data', {method: 'POST', body: params});
 }
 
-//adds map to tea.html page
+/** Adds a google map to tea.html */
 var map;
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -125,7 +125,7 @@ function setMarkers(map) {
   }
 }
 
-// marker is clicked, the info window will open with the message.
+/** Opens info window with message when marker is clicked */
 function attachMessage(marker, place) {
   var message = place[0];
   var infowindow = new google.maps.InfoWindow({
@@ -137,10 +137,10 @@ function attachMessage(marker, place) {
   });
 }
 
-//draws a chart using google charts library
+/** Draws a chart using Google Charts Library */
 function drawRegionsMap() {
   var data = google.visualization.arrayToDataTable([
-    ['Country', 'Popularity'],
+    ['Country', 'Cost per Capita'],
     ['United States', 1900],
     ['Switzerland', 1900],
     ['Germany', 1700],
