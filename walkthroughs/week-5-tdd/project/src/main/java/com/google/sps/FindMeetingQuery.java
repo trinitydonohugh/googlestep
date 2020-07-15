@@ -67,7 +67,7 @@ public final class FindMeetingQuery {
     return findMeetingTimes(busyTimeRanges, duration);
   }
 
-  //finds meeting times that don't fall during busy times of the day
+  // Finds meeting times that don't fall during busy times of the day.
   private List<TimeRange> findMeetingTimes(List<TimeRange> busyTimeRanges, long duration) {
     if (busyTimeRanges.isEmpty()) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
@@ -81,7 +81,7 @@ public final class FindMeetingQuery {
     return findFreeTimes(busyTimeMerged, sortByEndTime, duration);
   }
 
-  //merges all the overlapping busy times for all event attendees to create larger time interval, if possible
+  // Merges all the overlapping busy times for all event attendees to create larger time interval, if possible.
   private List<TimeRange> mergeBusyTimes(List<TimeRange> busyTimeRanges) {
     List<TimeRange> merged = new ArrayList<TimeRange>();
 
@@ -119,7 +119,7 @@ public final class FindMeetingQuery {
     return merged;
   }
 
-  //sorts all merged busy times by end time
+  // Sorts all merged busy times by end time.
   private List<TimeRange> sortByEnd(List<TimeRange> busyTimeMerged) {
     List<TimeRange> sorted = new ArrayList<TimeRange>(busyTimeMerged);
     Collections.sort(sorted, TimeRange.ORDER_BY_END);
@@ -143,7 +143,7 @@ public final class FindMeetingQuery {
     return busy;
   }
 
-  //finds all free times the meeting can occur
+  // Finds all free times the meeting can occur.
   private List<TimeRange> findFreeTimes(List<TimeRange> busyTimeRanges, List<TimeRange> sortByEndTime, long duration) {
     List<TimeRange> freeTimes = new ArrayList<TimeRange>();
 
@@ -178,7 +178,7 @@ public final class FindMeetingQuery {
       }
     }
 
-    //free time between end of day and last busy time
+    // Free time between end of day and last busy time.
     freeTime = TimeRange.fromStartEnd(sortByEndTime.get(numBusyRanges-1).end(), TimeRange.END_OF_DAY, true);
     if (freeTime.duration() >= duration) {
       freeTimes.add(freeTime);
