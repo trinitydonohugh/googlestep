@@ -30,10 +30,8 @@ public final class FindMeetingQuery {
    *
    * @param events all events happening on a given day including event name, 
    *                a TimeRange, and collection of attendees.
-   *
    * @param request details of meeting being requested including requested meeting name, 
    *                duration, and collection of attendees.
-   *
    * @return an ArrayList containing all the TimeRanges the request meeting can be scheduled
    *
    */
@@ -56,12 +54,12 @@ public final class FindMeetingQuery {
       List<TimeRange> optionalBusyTimeRanges = findBusyTimes(events, attendees);
       List<TimeRange> optionalMeetingTimes = findMeetingTimes(optionalBusyTimeRanges, duration);
 
+      //return optionalMeetingTimes;
       if(!optionalMeetingTimes.isEmpty()) {
         return optionalMeetingTimes;
-      } else {
+      } else if (request.getAttendees().isEmpty()){
         return Arrays.asList();
       }
-
     }
 
     return findMeetingTimes(busyTimeRanges, duration);
@@ -121,25 +119,22 @@ public final class FindMeetingQuery {
 
   // Sorts all merged busy times by end time.
   private List<TimeRange> sortByEnd(List<TimeRange> busyTimeMerged) {
-    List<TimeRange> sorted = new ArrayList<TimeRange>(busyTimeMerged);
-    Collections.sort(sorted, TimeRange.ORDER_BY_END);
-    return sorted;
+    List<TimeRange> sortedList = new ArrayList<TimeRange>(busyTimeMerged);
+    Collections.sort(sortedList, TimeRange.ORDER_BY_END);
+    return sortedList;
   }
 
   private ArrayList<TimeRange> findBusyTimes(Collection<Event> events, List<String> attendees) {
-    ArrayList<TimeRange> busy = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> busy = new ArrayList<TimeRange> ();
 
     for (Event event: events) {
-      boolean relevantEvent = false;
       for (String eventAttendee : event.getAttendees()) {
         if(attendees.contains(eventAttendee)) {
-          relevantEvent = true;
           busy.add(event.getWhen());
           break;
         }
       }
     }
-
     return busy;
   }
 
@@ -152,7 +147,7 @@ public final class FindMeetingQuery {
 
     int numBusyRanges = busyTimeRanges.size();
 
-    //free time between start of day and first busy time
+    // Free time between start of day and first busy time.
     TimeRange freeTime = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, busyTimeRanges.get(endIndex).start(), false);
     if (freeTime.duration() >= duration) {
       freeTimes.add(freeTime);
