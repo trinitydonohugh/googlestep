@@ -54,7 +54,7 @@ public final class FindMeetingQuery {
       List<TimeRange> optionalBusyTimeRanges = findBusyTimes(events, attendees);
       List<TimeRange> optionalMeetingTimes = findMeetingTimes(optionalBusyTimeRanges, duration);
 
-      //return optionalMeetingTimes;
+      // Return optionalMeetingTimes.
       if(!optionalMeetingTimes.isEmpty()) {
         return optionalMeetingTimes;
       } else if (request.getAttendees().isEmpty()){
