@@ -73,7 +73,6 @@ public final class FindMeetingQuery {
     Collections.sort(busyTimeRanges, TimeRange.ORDER_BY_START);
 
     List<TimeRange> busyTimeMerged = mergeBusyTimes(busyTimeRanges);
-    List<TimeRange> sortByEndTime = sortByEnd(busyTimeMerged);
 
     return findFreeTimes(busyTimeMerged, duration);
   }
