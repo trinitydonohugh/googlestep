@@ -54,7 +54,6 @@ public final class FindMeetingQuery {
       List<TimeRange> optionalBusyTimeRanges = findBusyTimes(events, attendees);
       List<TimeRange> optionalMeetingTimes = findMeetingTimes(optionalBusyTimeRanges, duration);
 
-      // Return optionalMeetingTimes.
       if(!optionalMeetingTimes.isEmpty()) {
         return optionalMeetingTimes;
       } else if (request.getAttendees().isEmpty()){
@@ -76,7 +75,7 @@ public final class FindMeetingQuery {
     List<TimeRange> busyTimeMerged = mergeBusyTimes(busyTimeRanges);
     List<TimeRange> sortByEndTime = sortByEnd(busyTimeMerged);
 
-    return findFreeTimes(busyTimeMerged, sortByEndTime, duration);
+    return findFreeTimes(busyTimeMerged, duration);
   }
 
   // Merges all the overlapping busy times for all event attendees to create larger time interval, if possible.
@@ -117,13 +116,6 @@ public final class FindMeetingQuery {
     return merged;
   }
 
-  // Sorts all merged busy times by end time.
-  private List<TimeRange> sortByEnd(List<TimeRange> busyTimeMerged) {
-    List<TimeRange> sortedList = new ArrayList<TimeRange>(busyTimeMerged);
-    Collections.sort(sortedList, TimeRange.ORDER_BY_END);
-    return sortedList;
-  }
-
   private ArrayList<TimeRange> findBusyTimes(Collection<Event> events, List<String> attendees) {
     ArrayList<TimeRange> busy = new ArrayList<TimeRange> ();
 
@@ -139,7 +131,7 @@ public final class FindMeetingQuery {
   }
 
   // Finds all free times the meeting can occur.
-  private List<TimeRange> findFreeTimes(List<TimeRange> busyTimeRanges, List<TimeRange> sortByEndTime, long duration) {
+  private List<TimeRange> findFreeTimes(List<TimeRange> busyTimeRanges, long duration) {
     List<TimeRange> freeTimes = new ArrayList<TimeRange>();
 
     int startIndex = 0;
@@ -174,7 +166,7 @@ public final class FindMeetingQuery {
     }
 
     // Free time between end of day and last busy time.
-    freeTime = TimeRange.fromStartEnd(sortByEndTime.get(numBusyRanges-1).end(), TimeRange.END_OF_DAY, true);
+    freeTime = TimeRange.fromStartEnd(busyTimeRanges.get(numBusyRanges-1).end(), TimeRange.END_OF_DAY, true);
     if (freeTime.duration() >= duration) {
       freeTimes.add(freeTime);
     }

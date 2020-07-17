@@ -419,4 +419,30 @@ public final class FindMeetingQueryTest {
 
     Assert.assertEquals(expected, actual);
   }
+
+  @Test
+  public void containsIgnored() {
+    // Have two people, both optional attendees with no gaps, so there is no time for
+    // a meeting that day.
+    //
+    // Events  : |-----------A-----------|   
+    //               |--c--|  |--B--|
+    // Day     : |-----------------------|
+    // Options : 
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, false), 
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES), 
+            Arrays.asList(PERSON_B)),
+        new Event("Event 3", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES), 
+            Arrays.asList(PERSON_C)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B, PERSON_C), DURATION_30_MINUTES);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected = Arrays.asList();
+
+    Assert.assertEquals(expected, actual);
+  }
 }
